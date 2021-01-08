@@ -130,12 +130,20 @@ d3.select(window).on("load", function() {
             svg.selectAll("path").attr("d", path);
           })
         
-        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json")
-          .then(function(world) {
-              svg.append("path")
-                .datum(topojson.feature(world, world.objects.land))
-                .attr("class", "r2d3globe-land")
-                .attr("d", path);
+        // approach using internal land110m
+        svg.append("path")
+          .datum(topojson.feature(land110m, land110m.objects.land))
+          .attr("class", "r2d3globe-land")
+          .attr("d", path);
+
+        // This aproach is better but not sure how to make it work with 
+        // Shiny
+        // d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json")
+        //   .then(function(world) {
+        //       svg.append("path")
+        //         .datum(topojson.feature(world, world.objects.land))
+        //         .attr("class", "r2d3globe-land")
+        //         .attr("d", path);
           });
     });
 });
