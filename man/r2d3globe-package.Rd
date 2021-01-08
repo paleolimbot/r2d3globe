@@ -9,6 +9,14 @@
 Provides inputs, outputs, and widgets to include interactive
   globes for 'Rmarkdown' and 'shiny' using 'D3'.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/paleolimbot/r2d3globe}
+  \item Report bugs at \url{https://github.com/paleolimbot/r2d3globe/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Dewey Dunnington \email{dewey.dunnington@dfo-mpo.gc.ca} (\href{https://orcid.org/0000-0002-9415-4582}{ORCID})
 

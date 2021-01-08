@@ -1,0 +1,49 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# r2d3globe
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+The goal of r2d3globe is to provide quick “pickers” and “showers” for
+global-scale geographic data sets using [d3](https://d3js.org/) and
+[d3-geo](https://github.com/d3/d3-geo#d3-geo). Right now it doesn’t
+actually work so you might want to just move along and check back later.
+
+## Installation
+
+You can install the development version from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("paleolimbot/r2d3globe")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+``` r
+library(r2d3globe)
+library(shiny)
+```
+
+``` r
+ui <- fluidPage(
+    titlePanel("Hello World! (like, literally)"),
+    globeSvgInput("globeInput"),
+    textOutput("textOut")
+)
+
+server <- function(input, output) {
+
+    output$textOut <- renderText({
+       paste0("Input value: ", input$bins)
+    })
+}
+
+shinyApp(ui = ui, server = server)
+```

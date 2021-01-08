@@ -18,3 +18,5 @@ Imports:
     shiny,
     r2d3,
     htmltools
+URL: https://github.com/paleolimbot/r2d3globe
+BugReports: https://github.com/paleolimbot/r2d3globe/issues
