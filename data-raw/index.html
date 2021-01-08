@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<head>
+<title>D3 Globe with GeoJSON Countries</title>
+<meta charset="utf-8">
+<style>
+.r2d3globe-svg-land {
+  fill: #000;
+}
+
+.r2d3globe-svg-graticule {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: .5px;
+}
+
+.r2d3globe-svg {
+  width: 100%;
+  height: 100vh;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+body, html {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.r2d3globe-svg-controls {
+  position: absolute;
+  top: 5;
+  left: 5;
+}
+
+</style>
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://d3js.org/d3-array.v2.min.js"></script>
+<script src="https://d3js.org/d3-geo.v2.min.js"></script>
+<script src="https://unpkg.com/topojson@3"></script>
+
+</head>
+<body>
+
+<div class="r2d3globe-svg-container">
+  <div class="r2d3globe-svg-controls">
+    <button class="r2d3globe-svg-control-zoom-in">Zoom In</button>
+    <button class="r2d3globe-svg-control-zoom-out">Zoom Out</button>
+  </div>
+</div>
+
+<div class="r2d3globe-svg-container">
+  <div class="r2d3globe-svg-controls">
+    <button class="r2d3globe-svg-control-zoom-in">Zoom In</button>
+    <button class="r2d3globe-svg-control-zoom-out">Zoom Out</button>
+  </div>
+</div>
+
+<script>
+
+d3.select(window).on("load", function() {
+  d3.selectAll(".r2d3globe-svg-container")
+    .each(function(d, i) {
+      var container = d3.select(this);
+      var svg = container
+          .append("svg")
+          .attr("class", "r2d3globe-svg");
+
+        var divWidth = container.node()
+          .getBoundingClientRect().width;
+        var divHeight = container.node()
+          .getBoundingClientRect().height;
+        
+        var dim = Math.min(divWidth, divHeight);
+        var height = dim;
+        var width = dim;
+        
+        var zoom_factor = 1.2;
+        var drag_factor_x = 0.5;
+        var drag_factor_y = drag_factor_x;
+        // TODO: animate zoom! https://observablehq.com/@d3/projection-transitions
+
+        var projection = d3.geoOrthographic()
+          .translate([width / 2, height / 2])
+          .scale(dim / 2)
+          .rotate([98,-39])
+          .clipAngle(90);
+
+        var path = d3.geoPath()
+          .projection(projection);
+
+        var graticule = d3.geoGraticule();
+
+        var line = svg.append("path")
+          .datum(graticule)
+          .attr("class", "r2d3globe-svg-graticule")
+          .attr("d", path);
+
+        svg.call(
+          d3.drag()
+            .on("drag", function(d) {
+
+                var λ = d3.scaleLinear()
+                    .domain([0, projection.scale() * 2 / drag_factor_x])
+                    .range([0, 360]);
+
+                var φ = d3.scaleLinear()
+                    .domain([0, projection.scale() * 2 / drag_factor_y])
+                    .range([0, 180]);
+
+                var rotation = projection.rotate();
+
+                projection.rotate([rotation[0] + λ(d.dx), rotation[1] + φ(-d.dy)]);
+                svg.selectAll("path").attr("d", path);
+            })
+        );
+
+        container.select(".r2d3globe-svg-control-zoom-in")
+          .on("click", function() {
+            projection.scale(projection.scale() * zoom_factor);
+            svg.selectAll("path").attr("d", path);
+          })
+
+        container.select(".r2d3globe-svg-control-zoom-out")
+          .on("click", function() {
+            projection.scale(projection.scale() / zoom_factor);
+            svg.selectAll("path").attr("d", path);
+          })
+        
+        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json")
+          .then(function(world) {
+              svg.append("path")
+                .datum(topojson.feature(world, world.objects.land))
+                .attr("class", "r2d3globe-land")
+                .attr("d", path);
+          });
+    });
+});
+
+</script>
+</body>
+</html>

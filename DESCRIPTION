@@ -1,0 +1,19 @@
+Package: r2d3globe
+Title: Intractive Globes for 'Rmarkdown' and 'shiny' using 'D3'
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Dewey",
+           family = "Dunnington",
+           role = c("aut", "cre"),
+           email = "dewey.dunnington@dfo-mpo.gc.ca",
+           comment = c(ORCID = "0000-0002-9415-4582"))
+Description: Provides inputs, outputs, and widgets to include interactive
+  globes for 'Rmarkdown' and 'shiny' using 'D3'.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    shiny,
+    htmltools
